@@ -1,0 +1,675 @@
+{
+	"info": {
+		"_postman_id": "7e0e47fd-5ee4-448b-ac26-dde2fea6708b",
+		"name": "GDSC Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18996257"
+	},
+	"item": [
+		{
+			"name": "CREATE BOOK",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Schema is valid\", function () {\r",
+							"  var schema = {\r",
+							"    type: \"object\",\r",
+							"    properties: {\r",
+							"      message: { type: \"string\" },\r",
+							"      data: {\r",
+							"        type: \"object\",\r",
+							"        properties: {\r",
+							"          title: { type: \"string\" },\r",
+							"          author: { type: \"string\" },\r",
+							"          published_at: { type: \"string\" },\r",
+							"          updated_at: { type: \"string\" },\r",
+							"          created_at: { type: \"string\" },\r",
+							"          id: { type: \"number\" }\r",
+							"        },\r",
+							"        required: [\"title\", \"author\", \"published_at\", \"updated_at\", \"created_at\", \"id\"]\r",
+							"      }\r",
+							"    },\r",
+							"    required: [\"message\", \"data\"]\r",
+							"  };\r",
+							"\r",
+							"  var response = pm.response.json();\r",
+							"  pm.expect(tv4.validate(response, schema)).to.be.true;\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"5 Minute to Learn Go\",\r\n    \"author\": \"Sundar Pichai\",\r\n    \"published_at\": \"2023-10-25\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{APP_URL}}/api/books",
+					"host": [
+						"{{APP_URL}}"
+					],
+					"path": [
+						"api",
+						"books"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "CREATE BOOK",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"5 Minute to Learn Go\",\r\n    \"author\": \"Sundar Pichai\",\r\n    \"published_at\": \"2023-10-25\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{APP_URL}}/api/books",
+							"host": [
+								"{{APP_URL}}"
+							],
+							"path": [
+								"api",
+								"books"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Host",
+							"value": "localhost:8000"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/8.3.13"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, private"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 25 Oct 2024 13:36:09 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "X-RateLimit-Limit",
+							"value": "60"
+						},
+						{
+							"key": "X-RateLimit-Remaining",
+							"value": "60"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Book created successfully\",\n    \"data\": {\n        \"title\": \"5 Minute to Learn Go\",\n        \"author\": \"Sundar Pichai\",\n        \"published_at\": \"2023-10-25\",\n        \"updated_at\": \"2024-10-25T13:36:09.000000Z\",\n        \"created_at\": \"2024-10-25T13:36:09.000000Z\",\n        \"id\": 2\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "READ BOOKS",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var response = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response schema is valid\", function () {\r",
+							"  var schema = {\r",
+							"    type: \"object\",\r",
+							"    properties: {\r",
+							"      data: {\r",
+							"        type: \"array\",\r",
+							"        items: {\r",
+							"          type: \"object\",\r",
+							"          properties: {\r",
+							"            id: { type: \"number\" },\r",
+							"            title: { type: \"string\" },\r",
+							"            author: { type: \"string\" },\r",
+							"            published_at: { type: \"string\" },\r",
+							"            created_at: { type: \"string\" },\r",
+							"            updated_at: { type: \"string\" }\r",
+							"          },\r",
+							"          required: [\"id\", \"title\", \"author\", \"published_at\", \"created_at\", \"updated_at\"]\r",
+							"        }\r",
+							"      }\r",
+							"    },\r",
+							"    required: [\"data\"]\r",
+							"  };\r",
+							"\r",
+							"  pm.expect(tv4.validate(response, schema)).to.be.true;\r",
+							"});\r",
+							"\r",
+							"//Set collection variabel BOOK_ID\r",
+							"pm.collectionVariables.set(\"BOOK_ID\", response.data[0].id);\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{APP_URL}}/api/books",
+					"host": [
+						"{{APP_URL}}"
+					],
+					"path": [
+						"api",
+						"books"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "READ BOOKS",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{APP_URL}}/api/books",
+							"host": [
+								"{{APP_URL}}"
+							],
+							"path": [
+								"api",
+								"books"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Host",
+							"value": "localhost:8000"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/8.3.13"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, private"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 25 Oct 2024 13:36:27 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "X-RateLimit-Limit",
+							"value": "60"
+						},
+						{
+							"key": "X-RateLimit-Remaining",
+							"value": "59"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": [\n        {\n            \"id\": 2,\n            \"title\": \"5 Minute to Learn Go\",\n            \"author\": \"Sundar Pichai\",\n            \"published_at\": \"2023-10-25\",\n            \"created_at\": \"2024-10-25T13:36:09.000000Z\",\n            \"updated_at\": \"2024-10-25T13:36:09.000000Z\"\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "Update Book",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Schema is valid\", function () {\r",
+							"  var schema = {\r",
+							"    type: \"object\",\r",
+							"    properties: {\r",
+							"      message: { type: \"string\" },\r",
+							"      data: {\r",
+							"        type: \"object\",\r",
+							"        properties: {\r",
+							"          id: { type: \"number\" },\r",
+							"          title: { type: \"string\" },\r",
+							"          author: { type: \"string\" },\r",
+							"          published_at: { type: \"string\" },\r",
+							"          created_at: { type: \"string\" },\r",
+							"          updated_at: { type: \"string\" }\r",
+							"        },\r",
+							"        required: [\"id\", \"title\", \"author\", \"published_at\", \"created_at\", \"updated_at\"]\r",
+							"      }\r",
+							"    },\r",
+							"    required: [\"message\", \"data\"]\r",
+							"  };\r",
+							"\r",
+							"  var response = pm.response.json();\r",
+							"  pm.expect(tv4.validate(response, schema)).to.be.true;\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"Updated Title\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{APP_URL}}/api/books/{{BOOK_ID}}",
+					"host": [
+						"{{APP_URL}}"
+					],
+					"path": [
+						"api",
+						"books",
+						"{{BOOK_ID}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Update Book",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Updated Title\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{APP_URL}}/api/books/{{BOOK_ID}}",
+							"host": [
+								"{{APP_URL}}"
+							],
+							"path": [
+								"api",
+								"books",
+								"{{BOOK_ID}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Host",
+							"value": "localhost:8000"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/8.3.13"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, private"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 25 Oct 2024 13:36:47 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "X-RateLimit-Limit",
+							"value": "60"
+						},
+						{
+							"key": "X-RateLimit-Remaining",
+							"value": "58"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Book updated successfully\",\n    \"data\": {\n        \"id\": 2,\n        \"title\": \"Updated Title\",\n        \"author\": \"Sundar Pichai\",\n        \"published_at\": \"2023-10-25\",\n        \"created_at\": \"2024-10-25T13:36:09.000000Z\",\n        \"updated_at\": \"2024-10-25T13:36:47.000000Z\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Delete Book",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Test for response schema validation\r",
+							"pm.test(\"Response schema is valid\", function () {\r",
+							"    var schema = {\r",
+							"        type: \"object\",\r",
+							"        properties: {\r",
+							"            message: {\r",
+							"                type: \"string\"\r",
+							"            }\r",
+							"        },\r",
+							"        required: [\"message\"]\r",
+							"    };\r",
+							"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{APP_URL}}/api/books/{{BOOK_ID}}",
+					"host": [
+						"{{APP_URL}}"
+					],
+					"path": [
+						"api",
+						"books",
+						"{{BOOK_ID}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Delete Book",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{APP_URL}}/api/books/{{BOOK_ID}}",
+							"host": [
+								"{{APP_URL}}"
+							],
+							"path": [
+								"api",
+								"books",
+								"{{BOOK_ID}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Host",
+							"value": "localhost:8000"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/8.3.13"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, private"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 25 Oct 2024 13:37:15 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "X-RateLimit-Limit",
+							"value": "60"
+						},
+						{
+							"key": "X-RateLimit-Remaining",
+							"value": "57"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Book deleted successfully\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Not Found Book",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 404\", function () {\r",
+							"    pm.expect(pm.response.code).to.equal(404);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response has the required fields\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    \r",
+							"    pm.expect(responseData).to.be.an('object');\r",
+							"    pm.expect(responseData.message).to.exist;\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Message is a non-empty string\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    \r",
+							"    pm.expect(responseData).to.be.an('object');\r",
+							"    pm.expect(responseData.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Message should not be empty\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{APP_URL}}/api/books/{{BOOK_ID}}",
+					"host": [
+						"{{APP_URL}}"
+					],
+					"path": [
+						"api",
+						"books",
+						"{{BOOK_ID}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Not Found Book",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{APP_URL}}/api/books/{{BOOK_ID}}",
+							"host": [
+								"{{APP_URL}}"
+							],
+							"path": [
+								"api",
+								"books",
+								"{{BOOK_ID}}"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Host",
+							"value": "localhost:8000"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/8.3.13"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, private"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 25 Oct 2024 13:37:22 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "X-RateLimit-Limit",
+							"value": "60"
+						},
+						{
+							"key": "X-RateLimit-Remaining",
+							"value": "56"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Book not found\"\n}"
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "APP_URL",
+			"value": "http://localhost:8000",
+			"type": "string"
+		},
+		{
+			"key": "BOOK_ID",
+			"value": "1",
+			"type": "string"
+		}
+	]
+}
